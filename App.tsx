@@ -5,20 +5,24 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import Recipes from './screens/Recipes';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Recipe from './screens/Recipe';
+import { RecipeProvider } from './context/RecipeContext';
 
+export type RootStackParamList = {
+  Recipes: undefined;
+  Recipe: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+  
   return (
-    <View style={styles.container}>
-      <Recipes />
-      {/* <WelcomeScreen /> */}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Recipes" component={Recipes} />
+        <Stack.Screen name="Recipe" component={Recipe} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
