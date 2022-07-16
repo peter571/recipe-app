@@ -1,11 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
-
-interface BtnProp {
-    title: string;
-    onPress: () => void;
-    isSelected: boolean;
-}
+import { BtnProp } from '../types/types'
 
 export default function Btn({ title, onPress, isSelected }: BtnProp) {
   return (

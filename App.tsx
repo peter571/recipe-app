@@ -10,7 +10,7 @@ import { RecipeProvider } from './context/RecipeContext';
 
 export type RootStackParamList = {
   Recipes: undefined;
-  Recipe: undefined;
+  Recipe: { itemId: number };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -18,11 +18,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
   
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Recipes" component={Recipes} />
-        <Stack.Screen name="Recipe" component={Recipe} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <RecipeProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Recipes" component={Recipes} />
+          <Stack.Screen name="Recipe" component={Recipe} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </RecipeProvider>
   );
 }

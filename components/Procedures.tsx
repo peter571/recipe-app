@@ -1,48 +1,18 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, ListRenderItem } from 'react-native'
 import React from 'react'
-import ProcedureCard, { ProcedureCardProp } from './ProcedureCard'
+import ProcedureCard from './ProcedureCard'
+import { ProceduresProp } from '../types/types'
 
-interface StepProp {
-  item: ProcedureCardProp
-}
-
-export default function Procedures() {
-  const data = [
-    {
-      position: 1,
-      instruction:
-        "In a large bowl, whisk the eggs until well combined. Add the milk, heavy cream, brown sugar, salt, cinnamon, and vanilla bean paste and whisk until completely combined.",
-    },
-    {
-      position: 2,
-      instruction:
-        "In a large bowl, whisk the eggs until well combined. Add the milk, heavy cream, brown sugar, salt, cinnamon, and vanilla bean paste and whisk until completely combined.",
-    },
-    {
-      position: 3,
-      instruction:
-        "In a large bowl, whisk the eggs until well combined. Add the milk, heavy cream, brown sugar, salt, cinnamon, and vanilla bean paste and whisk until completely combined.",
-    },
-    {
-      position: 4,
-      instruction:
-        "In a large bowl, whisk the eggs until well combined. Add the milk, heavy cream, brown sugar, salt, cinnamon, and vanilla bean paste and whisk until completely combined.",
-    },
-    {
-      position: 5,
-      instruction:
-        "In a large bowl, whisk the eggs until well combined. Add the milk, heavy cream, brown sugar, salt, cinnamon, and vanilla bean paste and whisk until completely combined.",
-    },
-  ];
-
-  const step = ({ item }: StepProp) => {
-    return <ProcedureCard instruction={item.instruction} position={item.position} />
+export default function Procedures({ instructions }: ProceduresProp) {
+  
+  const step: ListRenderItem<any> = ({ item }) => {
+    return <ProcedureCard instruction={item["display_text"]} position={item.position} />
   }
   
   return (
     <View style={{ flex: 1 }}>
       <FlatList 
-      data={data} 
+      data={instructions} 
       renderItem={step} 
       scrollEnabled={true} 
       ListFooterComponent={<View style={{height: 20}}/>}

@@ -13,24 +13,47 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
 
-interface RecipeCardProp {
+export interface RecipeProp {
+  id: number;
+  videoUrl: string;
   thumbnail: string;
-  rating: string;
-  recipeTitle: string;
+  score: number;
+  ingredients: any[];
+  instructions: any[];
+  name: string;
+  numOfServe: number;
   duration: string;
-  id: string;
 }
 
-export default function RecipeCard() {
+export interface RecipeCardProp {
+  id: number;
+  thumbnail: string;
+  score: number;
+  duration: string;
+  name: string;
+}
+
+export default function RecipeCard(props: RecipeCardProp) {
+  const {
+    id,
+    thumbnail,
+    score,
+    name,
+    duration
+  } = props;
+
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Recipe")}
+      onPress={() => navigation.navigate("Recipe", {
+        itemId: id  
+      })}
       style={styles.cardWrapper}
+      activeOpacity={0.8}
     >
       <ImageBackground
-        source={require("../assets/welcome.jpg")}
+        source={{ uri: thumbnail }}
         resizeMode="cover"
         style={styles.thumbnail}
       >
@@ -42,16 +65,16 @@ export default function RecipeCard() {
         >
           <View style={styles.ratingWrapper}>
             <Entypo name="star" size={17} color="#FFAD30" />
-            <Text style={styles.rating}>4.0</Text>
+            <Text style={styles.rating}>{score * 5}</Text>
           </View>
           <View style={styles.duration}>
             <Fontisto name="stopwatch" size={17} color="#D9D9D9" />
             <Text style={styles.time} numberOfLines={1}>
-              20 Min
+              {duration}{" "}Min
             </Text>
           </View>
           <Text style={styles.foodTitle} numberOfLines={2}>
-            Traditional spare ribs baked baked baked baked baked baked baked baked baked baked baked baked baked baked baked baked baked baked
+            {name}
           </Text>
         </LinearGradient>
       </ImageBackground>
@@ -61,12 +84,14 @@ export default function RecipeCard() {
 
 const styles = StyleSheet.create({
   cardWrapper: {
+    flex: 1,
     height: 150,
     width: "100%",
     position: "relative",
     marginVertical: 10,
   },
   thumbnail: {
+    flex: 1,
     height: "100%",
     width: "100%",
     borderRadius: 10,

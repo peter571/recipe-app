@@ -1,11 +1,7 @@
-import { View, Text, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
-import React from 'react';
-import { AntDesign } from '@expo/vector-icons';
-
-interface ButtonProp {
-    text: string;
-    onPress: (event: GestureResponderEvent) => void
-}
+import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React from 'react'
+import { AntDesign } from '@expo/vector-icons'
+import { ButtonProp } from '../types/types'
 
 export default function Button({text, onPress }: ButtonProp) {
   return (

@@ -1,12 +1,35 @@
 import { View, Text, StyleSheet, Button } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Video, AVPlaybackStatus, ResizeMode } from "expo-av";
 import Ingredients from "../components/Ingredients";
 import Procedures from "../components/Procedures";
 import Btn from "../components/Btn";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RecipeContext } from "../context/RecipeContext";
+import { RootStackParamList } from "../App";
+import { Entypo } from "@expo/vector-icons";
+import { Fontisto } from "@expo/vector-icons";
+import { recipes } from "./Recipes";
 
 export default function Recipe() {
+  //const { recipes } = useContext(RecipeContext);
+  const route = useRoute<RouteProp<RootStackParamList>>();
+  const id = route.params?.itemId;
+
+  const item = recipes.find((recipe) => recipe.id === id);
+
+  const {
+    videoUrl,
+    thumbnail,
+    score,
+    ingredients,
+    instructions,
+    name,
+    numOfServe,
+    duration,
+  } = item!;
+
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [tabs, setTabs] = useState(false);
@@ -32,7 +55,7 @@ export default function Recipe() {
         style={styles.video}
         resizeMode={ResizeMode.CONTAIN}
         source={{
-          uri: "https://vid.tasty.co/output/215487/hls24_1631150838.m3u8",
+          uri: videoUrl,
         }}
         useNativeControls
         isLooping
@@ -40,9 +63,18 @@ export default function Recipe() {
       />
       <View style={styles.titleWrapper}>
         <Text style={styles.recipeTitle} numberOfLines={2}>
-          Spicy chicken burger with French fries
+          {name}
         </Text>
-        <Text style={styles.reviews}>(13k Reviews)</Text>
+        <View style={styles.ratingWrapper}>
+          <Entypo name="star" size={17} color="#FFAD30" />
+          <Text style={styles.rating}>{score * 5}</Text>
+        </View>
+        <View style={styles.duration}>
+            <Fontisto name="stopwatch" size={17} color="#000" />
+            <Text style={styles.time} numberOfLines={1}>
+              {duration}{" "}Min
+            </Text>
+          </View>
       </View>
       <View style={styles.btns}>
         <Btn
@@ -64,12 +96,24 @@ export default function Recipe() {
             size={17}
             color="#A9A9A9"
           />
-          <Text style={styles.numItems}>1 Serve</Text>
+          <Text style={styles.numItems}>
+            {numOfServe == 1 ? numOfServe + " serve" : numOfServe + " serves"}
+          </Text>
         </View>
-        <Text style={styles.numItems}>10 items</Text>
+        <Text style={styles.numItems}>
+          {selected.ingredient
+            ? ingredients.length + " items"
+            : instructions.length + " steps"}
+        </Text>
       </View>
 
-      <View style={{ flex: 1 }} >{tabs ? <Procedures /> : <Ingredients />}</View>
+      <View style={{ flex: 1 }}>
+        {tabs ? (
+          <Procedures instructions={instructions} />
+        ) : (
+          <Ingredients ingredients={ingredients} />
+        )}
+      </View>
     </View>
   );
 }
@@ -120,5 +164,34 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: 11,
     lineHeight: 16,
+  },
+  ratingWrapper: {
+    backgroundColor: "#FFE1B3",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "baseline",
+    position: "absolute",
+    top: 0,
+    right: 10,
+    paddingHorizontal: 7,
+    paddingVertical: 2,
+    borderRadius: 20,
+  },
+  rating: {
+    color: "#000",
+    fontWeight: "400",
+    lineHeight: 12,
+    fontSize: 12,
+  },
+  duration: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    position: "absolute",
+    bottom: 0,
+    right: 10,
+  },
+  time: {
+    color: "#000",
+    marginLeft: 5,
   },
 });

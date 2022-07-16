@@ -1,50 +1,140 @@
-import * as React from 'react'
-import { API_KEY } from '@env'
+import * as React from "react";
+import { API_KEY } from "@env";
+import { useState } from "react";
 
 interface GlobalContent {
-    recipes: any[];
-    searchResults: any[];
+  recipes: any[];
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+  search: (searchTerm: string) => Promise<void>;
+  fetchRecipes: () => Promise<void>;
+  searchWithTags: (tag: string) => Promise<void>;
+  loading: boolean;
 }
 
 interface ProviderProp {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-const RecipeContext = React.createContext<GlobalContent>({} as GlobalContent);
+export const RecipeContext = React.createContext<GlobalContent>(
+  {} as GlobalContent
+);
 
 export const RecipeProvider = ({ children }: ProviderProp) => {
+  const [recipes, setRecipes] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const [recipes, setRecipes] = React.useState<any[]>([]);
-    const [searchResults, setSearchResults] = React.useState<any[]>([]);
+  /**Format the returned results array */
+  const formatResults = (results: any[]) => {
+    const filtered = results.filter((item: any) => {
+      if (
+        item["id"] &&
+        item["thumbnail_url"] &&
+        item["instructions"] &&
+        item["name"] &&
+        item["num_servings"]
+      ) {
+        return item;
+      }
+    });
 
-    /**Fetch Recipes */
-    const fetchRecipes = async () => {
-        try {
-            const options = {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': `${API_KEY}`,
-                    'X-RapidAPI-Host': 'tasty.p.rapidapi.com'
-                }
-            };
-            
-            const response = await fetch('https://tasty.p.rapidapi.com/recipes/list?from=0&size=20', options);
-            const results = await response.json();
-            setRecipes(results?.data);
+    return filtered.map((item) => {
+      return {
+        id: item["id"],
+        videoUrl: item["original_video_url"],
+        thumbnail: item["thumbnail_url"],
+        score: item["user_ratings"].score,
+        ingredients: item.sections[0].components,
+        instructions: item["instructions"],
+        name: item["name"],
+        numOfServe: item["num_servings"],
+        duration: item["total_time_minutes"],
+      };
+    })
+  };
 
-        } catch (error) {
-            
-        }
+  const options = {
+    method: "GET",
+    headers: {
+      "X-RapidAPI-Key": `${API_KEY}`,
+      "X-RapidAPI-Host": "tasty.p.rapidapi.com",
+    },
+  };
+
+  /**Fetch Recipes */
+  const fetchRecipes = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        "https://tasty.p.rapidapi.com/recipes/list?from=0&size=100",
+        options
+      );
+      const { results } = await response.json();
+      const formatedResults = formatResults(results);
+
+      setRecipes(formatedResults);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
+  };
 
-    /**Search Recipes */
-    const search = async (searchTerm: string) => {
-        
+  /**Search Recipes */
+  const search = async (searchTerm: string) => {
+    let value = searchTerm.toLowerCase();
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&q=${value}`,
+        options
+      );
+      const { results } = await response.json();
+      const formatedResults = formatResults(results);
+      setRecipes(formatedResults);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
+  };
 
-    return (
-        <RecipeContext.Provider value={{ recipes, searchResults}}>
-            {children}
-        </RecipeContext.Provider>
-    )
-}
+  /**Search with Tags */
+  const searchWithTags = async (tag: string) => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `https://tasty.p.rapidapi.com/recipes/list?from=0&size=20&tags=${tag}`,
+        options
+      );
+      const { results } = await response.json();
+      const formatedResults = formatResults(results);
+      setRecipes(formatedResults);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+  };
+
+  // React.useEffect(() => {
+  //   const fetchData = async () => {
+  //     await fetchRecipes();
+  //   };
+  //   fetchData();
+  // }, []);
+
+  return (
+    <RecipeContext.Provider
+      value={{
+        recipes,
+        searchQuery,
+        setSearchQuery,
+        fetchRecipes,
+        search,
+        searchWithTags,
+        loading,
+      }}
+    >
+      {children}
+    </RecipeContext.Provider>
+  );
+};

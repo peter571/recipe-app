@@ -1,10 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
-
-export interface IngredientCardProp {
-  item: string;
-}
+import { IngredientCardProp } from '../types/types'
 
 export default function IngredientCard({ item }: IngredientCardProp) {
   return (

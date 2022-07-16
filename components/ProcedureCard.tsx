@@ -1,10 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-
-export interface ProcedureCardProp {
-  instruction: string;
-  position: number;
-}
+import { ProcedureCardProp } from '../types/types'
 
 export default function ProcedureCard({ instruction, position }: ProcedureCardProp) {
   return (

@@ -1,18 +1,18 @@
-import { View, StyleSheet, FlatList } from 'react-native'
+import { View, StyleSheet, FlatList, ListRenderItem } from 'react-native'
 import React from 'react'
-import IngredientCard, { IngredientCardProp } from './IngredientCard'
+import IngredientCard from './IngredientCard'
+import { IngredientsProp, IngredientCardProp } from '../types/types'
 
-export default function Ingredients() {
-  const data = ["2 Tomatos", "3 Onions", "3 layed Eggs", "Yum of Africa", "Rice", "Garlics"]
-
-  const ingredient = ({ item }: IngredientCardProp) => {
-    return <IngredientCard item={item} />
+export default function Ingredients({ ingredients }: IngredientsProp) {
+  
+  const ingredient: ListRenderItem<IngredientCardProp> = ({ item }: IngredientCardProp) => {
+    return <IngredientCard item={item["raw_text"]} />
   }
 
   return (
     <View style={{ flex: 1 }}>
       <FlatList 
-      data={data} 
+      data={ingredients} 
       renderItem={ingredient} 
       scrollEnabled={true} 
       ListFooterComponent={<View style={{height: 20}}/>}
