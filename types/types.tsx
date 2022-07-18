@@ -46,3 +46,16 @@ export interface BtnProp {
     onPress: () => void;
     isSelected: boolean;
 }
+
+export interface UrlProp {
+  url: string;
+}
+
+export interface RecipeCardProp {
+  id: number;
+  thumbnail: string;
+  score: number;
+  duration: string;
+  name: string;
+}
+

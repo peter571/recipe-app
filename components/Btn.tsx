@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 11,
     lineHeight: 16,
+    fontFamily: 'PoppinsSemiBold'
   },
   selectedBg: {
     backgroundColor: '#129575',

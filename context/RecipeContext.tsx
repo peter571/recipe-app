@@ -10,6 +10,8 @@ interface GlobalContent {
   fetchRecipes: () => Promise<void>;
   searchWithTags: (tag: string) => Promise<void>;
   loading: boolean;
+  tag: string;
+  setTags: React.Dispatch<React.SetStateAction<string>>;
 }
 
 interface ProviderProp {
@@ -24,6 +26,7 @@ export const RecipeProvider = ({ children }: ProviderProp) => {
   const [recipes, setRecipes] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [tag, setTags] = useState('all');
 
   /**Format the returned results array */
   const formatResults = (results: any[]) => {
@@ -40,11 +43,13 @@ export const RecipeProvider = ({ children }: ProviderProp) => {
     });
 
     return filtered.map((item) => {
+      let newScore = item["user_ratings"].score ? item["user_ratings"].score.toFixed(1) * 5 : '';
+
       return {
         id: item["id"],
         videoUrl: item["original_video_url"],
         thumbnail: item["thumbnail_url"],
-        score: item["user_ratings"].score,
+        score: newScore,
         ingredients: item.sections[0].components,
         instructions: item["instructions"],
         name: item["name"],
@@ -94,6 +99,7 @@ export const RecipeProvider = ({ children }: ProviderProp) => {
       setRecipes(formatedResults);
       setLoading(false);
     } catch (error) {
+      console.log(error)
       setLoading(false);
     }
   };
@@ -122,6 +128,24 @@ export const RecipeProvider = ({ children }: ProviderProp) => {
   //   fetchData();
   // }, []);
 
+  // React.useEffect(() => {
+  //   const fetchData = async () => {
+  //     await search(searchQuery);
+  //   };
+  //   fetchData();
+  // }, [searchQuery]);
+
+  // React.useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (tag === 'all') {
+  //       await fetchRecipes();
+  //     } else {
+  //       await searchWithTags(tag);
+  //     }
+  //   };
+  //   fetchData();
+  // }, [tag]);
+
   return (
     <RecipeContext.Provider
       value={{
@@ -132,6 +156,8 @@ export const RecipeProvider = ({ children }: ProviderProp) => {
         search,
         searchWithTags,
         loading,
+        tag,
+        setTags
       }}
     >
       {children}

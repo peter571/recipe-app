@@ -6,14 +6,13 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
-  ListRenderItem,
   ScrollView,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import RecipeCard from "../components/RecipeCard";
-import { RecipeProp } from "../types/types";
 import { RecipeContext } from "../context/RecipeContext";
 import { TagProp } from "../types/types";
+import Loader from "../components/Loader";
 
 const tags = [
   {
@@ -45,137 +44,139 @@ const tags = [
     tag: "Snacks",
   },
 ];
-
-export const recipes = [
-  {
-    id: 1,
-    videoUrl:
-      "https://s3.amazonaws.com/video-api-prod/assets/5ef8b5c389ba4dd4b245b71453d8e1c1/Campbells_PizzaChickenBake_BFV87722_SQHero.mp4",
-    thumbnail:
-      "https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/d61cb267fa4d43c296d4afdce5a97ed4.jpeg",
-    score: 0.3,
-    ingredients: [
-      {
-        raw_text: "5 Mix eggs",
-      },
-      {
-        raw_text: "5 Mix eggs",
-      },
-      {
-        raw_text: "5 Mix eggs",
-      },
-    ],
-    instructions: [
-      {
-        position: 1,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-      {
-        position: 2,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-      {
-        position: 3,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-      {
-        position: 4,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-    ],
-    name: "New Years Champagne And Citrus Punch As Made By Marleys Menu",
-    numOfServe: 5,
-    duration: "10",
-  },
-  {
-    id: 2,
-    videoUrl:
-      "https://s3.amazonaws.com/video-api-prod/assets/3619c5033ca24d178fe1956b3d202d5b/BFV88208_DeathbyChocolate_SO_012822_1x1_OO_V7.mp4",
-    thumbnail:
-      "https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/0e4138bdfe1746bdb23b0b190a8a8bb9.png",
-    score: 0.7,
-    ingredients: [
-      {
-        raw_text: "5 Mix eggs",
-      },
-      {
-        raw_text: "5 Mix eggs",
-      },
-      {
-        raw_text: "5 Mix eggs",
-      },
-    ],
-    instructions: [
-      {
-        position: 1,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-      {
-        position: 2,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-    ],
-    name: "New Years Champagne And Citrus Punch As Made By Marleys Menu",
-    numOfServe: 5,
-    duration: "10",
-  },
-  {
-    id: 3,
-    videoUrl:
-      "https://s3.amazonaws.com/video-api-prod/assets/6890c639f6df4d3198a2034c7369f9aa/Sovos_GriddleStackers_BFV87496_SQHero.mp4",
-    thumbnail:
-      "https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/651a510d05e6459e97c96e726c5ebd22.jpeg",
-    score: 0.9,
-    ingredients: [
-      {
-        raw_text: "5 Mix eggs",
-      },
-      {
-        raw_text: "5 Mix eggs",
-      },
-    ],
-    instructions: [
-      {
-        position: 1,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-      {
-        position: 2,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-      {
-        position: 3,
-        display_text:
-          "Mix eggs, vanilla, sugar and milk together until combined.",
-      },
-    ],
-    name: "New Years Champagne And Citrus Punch As Made By Marleys Menu",
-    numOfServe: 5,
-    duration: "10",
-  },
-];
+//let recipes: any[] = [];
+// export const recipes = [
+//   {
+//     id: 1,
+//     videoUrl:
+//       "https://s3.amazonaws.com/video-api-prod/assets/5ef8b5c389ba4dd4b245b71453d8e1c1/Campbells_PizzaChickenBake_BFV87722_SQHero.mp4",
+//     thumbnail:
+//       "https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/d61cb267fa4d43c296d4afdce5a97ed4.jpeg",
+//     score: 0.3,
+//     ingredients: [
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//     ],
+//     instructions: [
+//       {
+//         position: 1,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//       {
+//         position: 2,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//       {
+//         position: 3,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//       {
+//         position: 4,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//     ],
+//     name: "New Years Champagne And Citrus Punch As Made By Marleys Menu",
+//     numOfServe: 5,
+//     duration: "10",
+//   },
+//   {
+//     id: 2,
+//     videoUrl:
+//       "https://s3.amazonaws.com/video-api-prod/assets/3619c5033ca24d178fe1956b3d202d5b/BFV88208_DeathbyChocolate_SO_012822_1x1_OO_V7.mp4",
+//     thumbnail:
+//       "https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/0e4138bdfe1746bdb23b0b190a8a8bb9.png",
+//     score: 0.7,
+//     ingredients: [
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//     ],
+//     instructions: [
+//       {
+//         position: 1,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//       {
+//         position: 2,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//     ],
+//     name: "New Years Champagne And Citrus Punch As Made By Marleys Menu",
+//     numOfServe: 5,
+//     duration: "10",
+//   },
+//   {
+//     id: 3,
+//     videoUrl:
+//       "https://s3.amazonaws.com/video-api-prod/assets/6890c639f6df4d3198a2034c7369f9aa/Sovos_GriddleStackers_BFV87496_SQHero.mp4",
+//     thumbnail:
+//       "https://img.buzzfeed.com/tasty-app-user-assets-prod-us-east-1/recipes/651a510d05e6459e97c96e726c5ebd22.jpeg",
+//     score: 0.9,
+//     ingredients: [
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//       {
+//         raw_text: "5 Mix eggs",
+//       },
+//     ],
+//     instructions: [
+//       {
+//         position: 1,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//       {
+//         position: 2,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//       {
+//         position: 3,
+//         display_text:
+//           "Mix eggs, vanilla, sugar and milk together until combined.",
+//       },
+//     ],
+//     name: "New Years Champagne And Citrus Punch As Made By Marleys Menu",
+//     numOfServe: 5,
+//     duration: "10",
+//   },
+// ];
 
 export default function Recipes() {
-  //const { recipes } = useContext(RecipeContext);
+  const { recipes, setTags, setSearchQuery, loading } = useContext(RecipeContext);
 
   const [searchText, setSearchText] = useState("");
-  const [selectedId, setSelectedId] = useState<string | null>('all');
-
-  console.log(selectedId);
+  const [selectedId, setSelectedId] = useState<string | null>("all");
+  
   const handleSearch = (text: string) => setSearchText(text);
 
   const tag = ({ item }: TagProp) => {
     return (
       <TouchableOpacity
-        onPress={() => setSelectedId(item.id)}
+        onPress={() => {
+          setSelectedId(item.id);
+          setTags(item.id);
+        }}
         style={[
           styles.tagBtn,
           item.id === selectedId && styles.tagBackgroundColor,
@@ -202,7 +203,12 @@ export default function Recipes() {
           keyboardType="default"
         />
         <Feather style={styles.searchIcon} name="search" size={24} />
-        <Feather style={styles.searchBtn} name="search" size={20} />
+        <Feather
+          onPress={() => setSearchQuery(searchText)}
+          style={styles.searchBtn}
+          name="search"
+          size={20}
+        />
       </View>
       <View style={styles.tagsWrapper}>
         <FlatList
@@ -213,11 +219,23 @@ export default function Recipes() {
           ListFooterComponent={<View style={{ height: 20 }} />}
         />
       </View>
-      <ScrollView style={styles.recipes}>
-        {recipes.map((item) => {
-          return <RecipeCard key={item.id} { ...item } />
-        })}
-      </ScrollView>
+        {loading ? (
+          <Loader />
+        ) : (
+          <View style={{ flex: 1 }}>
+          {recipes.length === 0 ? (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={styles.zeroText}>No Recipes Found!</Text>
+            </View>
+          ) : (
+            <ScrollView style={styles.recipes}>
+            {recipes.map((item) => {
+              return <RecipeCard key={item.id} {...item} />;
+            })}
+          </ScrollView>
+          )}
+          </View>
+        )}
     </View>
   );
 }
@@ -225,7 +243,13 @@ export default function Recipes() {
 const styles = StyleSheet.create({
   recipes: {
     flex: 1,
-    marginVertical: 25,
+    marginTop: 10,
+  },
+  zeroText: {
+    color: '#000',
+    textAlign: 'center',
+    justifyContent: 'center',
+    fontFamily: 'PoppinsLight'
   },
   search: {
     position: "relative",
@@ -261,12 +285,14 @@ const styles = StyleSheet.create({
   },
   idTag: {
     color: "#FFF",
+    fontFamily: 'PoppinsLight'
   },
   tagText: {
     color: "#129575",
     fontWeight: "600",
     fontSize: 11,
     lineHeight: 16,
+    fontFamily: 'PoppinsLight'
   },
   container: {
     flex: 1,
@@ -280,12 +306,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#000000",
     lineHeight: 30,
-  },
-  question: {
-    fontWeight: "400",
-    fontSize: 11,
-    color: "#A9A9A9",
-    lineHeight: 16,
+    fontFamily: 'PoppinsSemiBold'
   },
   input: {
     height: 40,

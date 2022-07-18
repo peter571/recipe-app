@@ -5,57 +5,37 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Fontisto } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../App";
-
-export interface RecipeProp {
-  id: number;
-  videoUrl: string;
-  thumbnail: string;
-  score: number;
-  ingredients: any[];
-  instructions: any[];
-  name: string;
-  numOfServe: number;
-  duration: string;
-}
-
-export interface RecipeCardProp {
-  id: number;
-  thumbnail: string;
-  score: number;
-  duration: string;
-  name: string;
-}
+import { RecipeCardProp } from "../types/types";
 
 export default function RecipeCard(props: RecipeCardProp) {
-  const {
-    id,
-    thumbnail,
-    score,
-    name,
-    duration
-  } = props;
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { id, thumbnail, score, name, duration } = props;
 
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Recipe", {
-        itemId: id  
-      })}
-      style={styles.cardWrapper}
+      onPress={() =>
+        navigation.navigate("Recipe", {
+          itemId: id,
+        })
+      }
+      style={[styles.cardWrapper, isLoaded && styles.load]}
       activeOpacity={0.8}
     >
       <ImageBackground
         source={{ uri: thumbnail }}
         resizeMode="cover"
         style={styles.thumbnail}
+        onLoad={() => setIsLoaded(true)}
       >
         <LinearGradient
           colors={["#000", "transparent"]}
@@ -65,12 +45,12 @@ export default function RecipeCard(props: RecipeCardProp) {
         >
           <View style={styles.ratingWrapper}>
             <Entypo name="star" size={17} color="#FFAD30" />
-            <Text style={styles.rating}>{score * 5}</Text>
+            <Text style={styles.rating}>{score}</Text>
           </View>
           <View style={styles.duration}>
             <Fontisto name="stopwatch" size={17} color="#D9D9D9" />
             <Text style={styles.time} numberOfLines={1}>
-              {duration}{" "}Min
+              {duration} Min
             </Text>
           </View>
           <Text style={styles.foodTitle} numberOfLines={2}>
@@ -89,6 +69,10 @@ const styles = StyleSheet.create({
     width: "100%",
     position: "relative",
     marginVertical: 10,
+    display: 'none'
+  },
+  load: {
+    display: "flex"
   },
   thumbnail: {
     flex: 1,
@@ -109,6 +93,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     color: "#FFF",
     width: "60%",
+    fontFamily: 'PoppinsLight'
   },
   duration: {
     flexDirection: "row",
@@ -116,10 +101,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     right: 10,
+    
   },
   time: {
     color: "#D9D9D9",
     marginLeft: 5,
+    fontFamily: 'PoppinsLight'
   },
   ratingWrapper: {
     backgroundColor: "#FFE1B3",
@@ -137,6 +124,7 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "400",
     lineHeight: 12,
-    fontSize: 12,
+    fontSize: 10,
+    fontFamily: 'PoppinsLight'
   },
 });

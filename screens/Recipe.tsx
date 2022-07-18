@@ -1,6 +1,5 @@
 import { View, Text, StyleSheet, Button } from "react-native";
 import React, { useContext, useRef, useState } from "react";
-import { Video, AVPlaybackStatus, ResizeMode } from "expo-av";
 import Ingredients from "../components/Ingredients";
 import Procedures from "../components/Procedures";
 import Btn from "../components/Btn";
@@ -10,10 +9,12 @@ import { RecipeContext } from "../context/RecipeContext";
 import { RootStackParamList } from "../App";
 import { Entypo } from "@expo/vector-icons";
 import { Fontisto } from "@expo/vector-icons";
-import { recipes } from "./Recipes";
+//import { recipes } from "./Recipes";
+import VideoCard from "../components/VideoCard";
+import ImageCard from "../components/ImageCard";
 
 export default function Recipe() {
-  //const { recipes } = useContext(RecipeContext);
+  const { recipes } = useContext(RecipeContext);
   const route = useRoute<RouteProp<RootStackParamList>>();
   const id = route.params?.itemId;
 
@@ -30,8 +31,8 @@ export default function Recipe() {
     duration,
   } = item!;
 
-  const video = useRef(null);
-  const [status, setStatus] = useState({});
+  const formatedScore = score ? score.toFixed(1) : '';
+
   const [tabs, setTabs] = useState(false);
   const [selected, setSelected] = useState({
     ingredient: true,
@@ -50,32 +51,22 @@ export default function Recipe() {
 
   return (
     <View style={styles.recipeWrapper}>
-      <Video
-        ref={video}
-        style={styles.video}
-        resizeMode={ResizeMode.CONTAIN}
-        source={{
-          uri: videoUrl,
-        }}
-        useNativeControls
-        isLooping
-        onPlaybackStatusUpdate={(status) => setStatus(() => status)}
-      />
+      {videoUrl ? <VideoCard url={videoUrl} /> : <ImageCard url={thumbnail} />}
       <View style={styles.titleWrapper}>
         <Text style={styles.recipeTitle} numberOfLines={2}>
           {name}
         </Text>
         <View style={styles.ratingWrapper}>
           <Entypo name="star" size={17} color="#FFAD30" />
-          <Text style={styles.rating}>{score * 5}</Text>
+          <Text style={styles.rating}>{score}</Text>
         </View>
-        <View style={styles.duration}>
-            <Fontisto name="stopwatch" size={17} color="#000" />
-            <Text style={styles.time} numberOfLines={1}>
-              {duration}{" "}Min
-            </Text>
-          </View>
       </View>
+      <View style={styles.duration}>
+          <Fontisto name="stopwatch" size={17} color="#000" />
+          <Text style={styles.time} numberOfLines={1}>
+            {duration} Min
+          </Text>
+        </View>
       <View style={styles.btns}>
         <Btn
           title="Ingredients"
@@ -123,12 +114,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 10,
   },
-  video: {
-    alignSelf: "center",
-    width: "100%",
-    height: 200,
-    borderRadius: 10,
-  },
   titleWrapper: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -140,12 +125,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     color: "#000",
     width: "60%",
-  },
-  reviews: {
-    fontWeight: "400",
-    fontSize: 14,
-    lineHeight: 20,
-    color: "#A9A9A9",
+    fontFamily: 'PoppinsLight'
   },
   btns: {
     flexDirection: "row",
@@ -162,8 +142,9 @@ const styles = StyleSheet.create({
   numItems: {
     color: "#A9A9A9",
     fontWeight: "400",
-    fontSize: 11,
+    fontSize: 14,
     lineHeight: 16,
+    fontFamily: 'PoppinsLight'
   },
   ratingWrapper: {
     backgroundColor: "#FFE1B3",
@@ -181,17 +162,17 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "400",
     lineHeight: 12,
-    fontSize: 12,
+    fontSize: 10,
+    fontFamily: 'PoppinsLight'
   },
   duration: {
     flexDirection: "row",
     alignItems: "baseline",
-    position: "absolute",
-    bottom: 0,
-    right: 10,
+    marginBottom: 10
   },
   time: {
     color: "#000",
     marginLeft: 5,
+    fontFamily: 'PoppinsLight'
   },
 });

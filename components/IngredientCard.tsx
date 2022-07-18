@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
     },
     ingredients: {
         fontWeight: '600',
-        fontSize: 16,
+        fontSize: 13,
         lineHeight: 24,
         color: '#121212',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        fontFamily: 'PoppinsSemiBold'
     },
     rightCircle: {
       marginRight: 5,
