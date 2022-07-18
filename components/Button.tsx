@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         fontWeight: '600',
         fontSize: 16,
-        paddingHorizontal: 5
+        paddingHorizontal: 5,
+        fontFamily: 'PoppinsLight'
     },
 
     icon: {

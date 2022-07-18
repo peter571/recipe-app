@@ -1,13 +1,18 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import React from 'react'
-import { BtnProp } from '../types/types'
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from "react";
+import { BtnProp } from "../types/types";
 
 export default function Btn({ title, onPress, isSelected }: BtnProp) {
   return (
-    <TouchableOpacity style={[styles.btn, isSelected && styles.selectedBg]} onPress={onPress}>
-      <Text style={[styles.title, isSelected && styles.selectedTitle]}>{title}</Text>
+    <TouchableOpacity
+      style={[styles.btn, isSelected && styles.selectedBg]}
+      onPress={onPress}
+    >
+      <Text style={[styles.title, isSelected && styles.selectedTitle]}>
+        {title}
+      </Text>
     </TouchableOpacity>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -23,12 +28,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 11,
     lineHeight: 16,
-    fontFamily: 'PoppinsSemiBold'
+    fontFamily: "PoppinsSemiBold",
   },
   selectedBg: {
-    backgroundColor: '#129575',
+    backgroundColor: "#129575",
   },
   selectedTitle: {
-    color: '#FFF'
-  }
-})
+    color: "#FFF",
+  },
+});
