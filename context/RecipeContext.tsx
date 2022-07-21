@@ -121,30 +121,30 @@ export const RecipeProvider = ({ children }: ProviderProp) => {
     }
   };
 
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     await fetchRecipes();
-  //   };
-  //   fetchData();
-  // }, []);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await fetchRecipes();
+    };
+    fetchData();
+  }, []);
 
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     await search(searchQuery);
-  //   };
-  //   fetchData();
-  // }, [searchQuery]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      await search(searchQuery);
+    };
+    fetchData();
+  }, [searchQuery]);
 
-  // React.useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (tag === 'all') {
-  //       await fetchRecipes();
-  //     } else {
-  //       await searchWithTags(tag);
-  //     }
-  //   };
-  //   fetchData();
-  // }, [tag]);
+  React.useEffect(() => {
+    const fetchData = async () => {
+      if (tag === 'all') {
+        await fetchRecipes();
+      } else {
+        await searchWithTags(tag);
+      }
+    };
+    fetchData();
+  }, [tag]);
 
   return (
     <RecipeContext.Provider
