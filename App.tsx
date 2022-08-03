@@ -32,7 +32,11 @@ export default function App() {
     <RecipeProvider>
       <NavigationContainer>
         <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Recipes"
             component={Recipes}
